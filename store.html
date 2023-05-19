@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shopping Cart</title>
+  <style>
+    .item {
+      margin-bottom: 10px;
+    }
+    .item span {
+      margin-right: 10px;
+    }
+    .heart {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-color: gray;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .liked {
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+    <h1>SUPER STORE</h1>
+  <div id="cart">
+    <div class="item">
+        <img src="tshirt.jpg" alt="T-shirt" width="100" height="100">
+      <span>T-shirt</span>
+      <button onclick="adjustQuantity(0, -1)">-</button>
+      <span id="quantity-0">2</span>
+      <button onclick="adjustQuantity(0, 1)">+</button>
+      <span class="heart" onclick="toggleLike(0)"></span>
+      <button onclick="deleteItem(0)">Delete</button>
+    </div>
+    <div class="item">
+        <img src="jeans.jpg" alt="T-shirt" width="100" height="100">
+      <span>Jeans</span>
+      <button onclick="adjustQuantity(1, -1)">-</button>
+      <span id="quantity-1">1</span>
+      <button onclick="adjustQuantity(1, 1)">+</button>
+      <span class="heart" onclick="toggleLike(1)"></span>
+      <button onclick="deleteItem(1)">Delete</button>
+    </div>
+    <div class="item">
+        <img src="shoes.jpg" alt="T-shirt" width="100" height="100">
+      <span>Shoes</span>
+      <button onclick="adjustQuantity(2, -1)">-</button>
+      <span id="quantity-2">3</span>
+      <button onclick="adjustQuantity(2, 1)">+</button>
+      <span class="heart" onclick="toggleLike(2)"></span>
+      <button onclick="deleteItem(2)">Delete</button>
+    </div>
+  </div>
+
+  <p>Total Price: $<span id="total-price">0</span></p>
+
+  <script>
+    // Array to store item details
+    var cartItems = [
+      { name: "T-shirt", quantity: 2, liked: false, price: 25 },
+      { name: "Jeans", quantity: 1, liked: false, price: 50 },
+      { name: "Shoes", quantity: 3, liked: false, price: 25 }
+    ];
+
+    // Function to adjust quantity
+    function adjustQuantity(index, change) {
+      cartItems[index].quantity += change;
+      if (cartItems[index].quantity < 0) {
+        cartItems[index].quantity = 0;
+      }
+      document.getElementById("quantity-" + index).innerText = cartItems[index].quantity;
+      updateTotalPrice();
+    }
+
+    // Function to delete an item
+    function deleteItem(index) {
+      cartItems.splice(index, 1);
+      var itemElement = document.getElementsByClassName("item")[index];
+      itemElement.parentNode.removeChild(itemElement);
+      updateTotalPrice();
+    }
+
+    // Function to toggle like status
+    function toggleLike(index) {
+      cartItems[index].liked = !cartItems[index].liked;
+      var heartElement = document.getElementsByClassName("heart")[index];
+      heartElement.classList.toggle("liked");
+    }
+
+    // Function to update total price
+    function updateTotalPrice() {
+      var totalPrice = 0;
+      for (var i = 0; i < cartItems.length; i++) {
+        totalPrice += cartItems[i].quantity * cartItems[i].price;
+      }
+      document.getElementById("total-price").innerText = totalPrice;
+    }
+
+    // Initial update of total price
+    updateTotalPrice();
+  </script>
+</body>
+</html>
